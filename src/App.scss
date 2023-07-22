@@ -34,9 +34,11 @@ body {
 	margin: 5rem auto 0 auto;
 	.search {
 		position: relative;
+		width: 532.67px;
+		display: flex;
+		justify-content: space-between;
 		input {
-			max-width: 500px;
-			width: 100%;
+			width: 500px;
 			font-weight: 500;
 			border: 1px solid var(--primary-color-gray);
 			padding: 0.5rem 1rem;
@@ -57,6 +59,8 @@ body {
 			position: absolute;
 			width: 100%;
 			max-height: 200px;
+			top: 32.67px;
+			margin: 0;
 			overflow-y: scroll;
 			background-color: white;
 			box-shadow: rgba(0, 0, 0, 0.1) 0.95px 17.95px 12px;

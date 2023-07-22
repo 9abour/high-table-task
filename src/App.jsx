@@ -48,7 +48,7 @@ function App() {
 
 	// just to hide search results
 	useEffect(() => {
-		if (searchResults.length > 0) {
+		if (searchResults) {
 			setSearchResultsIsOpen(true);
 		} else {
 			setSearchResultsIsOpen(false);
@@ -68,7 +68,6 @@ function App() {
 	};
 
 	const getSymbol = async symbol => {
-		setSearchResultsIsOpen(false);
 		setCurrentSymbol(symbol["1. symbol"]);
 		await fetchGlobalQuote(symbol["1. symbol"]);
 	};
