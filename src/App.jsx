@@ -28,8 +28,8 @@ function App() {
 				}`
 			);
 			if (keywords != "") {
-				console.log(data.bestMatches);
 				setSearchResults(data.bestMatches);
+				setSearchResultsIsOpen(true);
 			} else {
 				setSearchResults([]);
 			}
@@ -37,15 +37,6 @@ function App() {
 			console.log(err);
 		}
 	};
-
-	// just to hide search results
-	useEffect(() => {
-		if (searchResults) {
-			setSearchResultsIsOpen(true);
-		} else {
-			setSearchResultsIsOpen(false);
-		}
-	}, [searchResults]);
 
 	// Get price and info about current symbol
 	const fetchGlobalQuote = async () => {
