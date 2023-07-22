@@ -23,7 +23,9 @@ function App() {
 	const searchForSymbol = async keywords => {
 		try {
 			const { data } = await axios(
-				`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keywords}&apikey=${process.env.API_KEY}`
+				`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keywords}&apikey=${
+					import.meta.env.VITE_API_KEY
+				}`
 			);
 			if (keywords != "") {
 				console.log(data.bestMatches);
@@ -49,7 +51,9 @@ function App() {
 	const fetchGlobalQuote = async () => {
 		try {
 			const { data } = await axios(
-				`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${currentSymbol}&apikey=${process.env.API_KEY}`
+				`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${currentSymbol}&apikey=${
+					import.meta.env.VITE_API_KEY
+				}`
 			);
 			setGlobalQuote(data["Global Quote"]);
 		} catch (err) {
@@ -89,7 +93,9 @@ function App() {
 	) => {
 		try {
 			const { data } = await axios(
-				`https://www.alphavantage.co/query?function=${timeSeriesUrl}&symbol=${currentSymbol}${interval}&apikey=${process.env.API_KEY}`
+				`https://www.alphavantage.co/query?function=${timeSeriesUrl}&symbol=${currentSymbol}${interval}&apikey=${
+					import.meta.env.VITE_API_KEY
+				}`
 			);
 			setCurrentStockData(
 				Object.entries(data[timeSeries]).slice(0, timeNumber)
