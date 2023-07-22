@@ -89,7 +89,7 @@ function App() {
 	) => {
 		try {
 			const { data } = await axios(
-				`https://www.alphavantage.co/query?function=${timeSeriesUrl}&symbol=${currentSymbol}${interval}&apikey=${process.env.API_KEY}`
+				`https://www.alphavantage.co/query?function=${timeSeriesUrl}&symbol=${currentSymbol}${interval}&apikey=${process.env.REACT_APPAPI_KEY}`
 			);
 			setCurrentStockData(
 				Object.entries(data[timeSeries]).slice(0, timeNumber)
