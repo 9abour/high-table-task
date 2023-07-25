@@ -29,7 +29,6 @@ function App() {
 			);
 			if (keywords != "") {
 				setSearchResults(data.bestMatches);
-				setSearchResultsIsOpen(true);
 			} else {
 				setSearchResults([]);
 			}
@@ -154,6 +153,20 @@ function App() {
 		fetchStock();
 	}, [timeOption]);
 
+	const inputRef = useRef();
+
+	useEffect(() => {
+		if (inputRef.current != null) {
+			inputRef.current.addEventListener("focus", () => {
+				setSearchResultsIsOpen(true);
+			});
+
+			inputRef.current.addEventListener("focusout", () => {
+				setSearchResultsIsOpen(false);
+			});
+		}
+	}, [inputRef, searchResults]);
+
 	return (
 		<main className="main">
 			<form
@@ -170,26 +183,32 @@ function App() {
 					onChange={e => {
 						searchForSymbol(e.target.value);
 					}}
-					autoFocus
+					ref={inputRef}
 				/>
 				<button type="submit">Search</button>
-				{searchResultsIsOpen && (
-					<ul className="search__results">
-						{searchResults.map(item => (
-							<li key={item["1. symbol"]}>
-								<button
-									onClick={e => {
-										e.preventDefault();
-										getSymbol(item["1. symbol"]);
-										setSearchResultsIsOpen(false);
-									}}
-								>
-									{item["1. symbol"]}
-								</button>
-							</li>
-						))}
-					</ul>
-				)}
+				<ul className="search__results">
+					{searchResultsIsOpen && (
+						<>
+							{searchResults.length ? (
+								searchResults.map(item => (
+									<li key={item["1. symbol"]}>
+										<button
+											onClick={e => {
+												e.preventDefault();
+												getSymbol(item["1. symbol"]);
+												setSearchResultsIsOpen(false);
+											}}
+										>
+											{item["1. symbol"]}
+										</button>
+									</li>
+								))
+							) : (
+								<h4 className="loading">No results!</h4>
+							)}
+						</>
+					)}
+				</ul>
 			</form>
 			{globalQuote && (
 				<div className="stock__info">
