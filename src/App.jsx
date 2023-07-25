@@ -154,7 +154,6 @@ function App() {
 	}, [timeOption]);
 
 	const inputRef = useRef();
-
 	useEffect(() => {
 		if (inputRef.current != null) {
 			inputRef.current.addEventListener("focus", () => {
@@ -162,10 +161,12 @@ function App() {
 			});
 
 			inputRef.current.addEventListener("focusout", () => {
-				setSearchResultsIsOpen(false);
+				setTimeout(() => {
+					setSearchResultsIsOpen(false);
+				}, 200);
 			});
 		}
-	}, [inputRef, searchResults]);
+	}, [inputRef]);
 
 	return (
 		<main className="main">
@@ -174,7 +175,7 @@ function App() {
 				onSubmit={e => {
 					e.preventDefault();
 					getSymbol(searchResults[0]["1. symbol"]);
-					setSearchResultsIsOpen(false);
+					inputRef.current.blur();
 				}}
 			>
 				<input
@@ -192,15 +193,7 @@ function App() {
 							{searchResults.length ? (
 								searchResults.map(item => (
 									<li key={item["1. symbol"]}>
-										<button
-											onClick={e => {
-												e.preventDefault();
-												getSymbol(item["1. symbol"]);
-												setSearchResultsIsOpen(false);
-											}}
-										>
-											{item["1. symbol"]}
-										</button>
+										<button type="submit">{item["1. symbol"]}</button>
 									</li>
 								))
 							) : (
