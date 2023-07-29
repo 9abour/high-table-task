@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import Stock from "./components/Stock";
 import axios from "axios";
-import { getSearchResults } from "./utilities/search/getSearchResults";
-import { getGlobalQuoteInfo } from "./utilities/getGlobalQuoteInfo";
 
 function App() {
 	const [searchResults, setSearchResults] = useState([]);
@@ -20,6 +18,42 @@ function App() {
 		threeMonths: 90,
 		oneYear: 12,
 		fiveYears: 60,
+	};
+
+	const searchForSymbol = async keywords => {
+		try {
+			const { data } = await axios(
+				`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keywords}&apikey=${
+					import.meta.env.VITE_API_KEY
+				}`
+			);
+			if (keywords != "") {
+				setSearchResults(data.bestMatches);
+			} else {
+				setSearchResults([]);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	// Get price and info about current symbol
+	const fetchGlobalQuote = async () => {
+		try {
+			const { data } = await axios(
+				`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${currentSymbol}&apikey=${
+					import.meta.env.VITE_API_KEY
+				}`
+			);
+			setGlobalQuote(data["Global Quote"]);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const getSymbol = symbol => {
+		setCurrentSymbol(symbol);
+		fetchGlobalQuote(symbol);
 	};
 
 	// Time option set to active
@@ -111,7 +145,7 @@ function App() {
 	// Update the charts and stack info when the symbol changes
 	useEffect(() => {
 		fetchStock();
-		getGlobalQuoteInfo(currentSymbol).then(data => setGlobalQuote(data));
+		fetchGlobalQuote();
 	}, [currentSymbol]);
 
 	// Just update the charts by the new time when time option changes
@@ -140,7 +174,7 @@ function App() {
 				className="search"
 				onSubmit={e => {
 					e.preventDefault();
-					setCurrentSymbol(searchResults[0]["1. symbol"]);
+					getSymbol(searchResults[0]["1. symbol"]);
 					inputRef.current.blur();
 				}}
 			>
@@ -148,9 +182,7 @@ function App() {
 					type="text"
 					placeholder="PayPal"
 					onChange={e => {
-						getSearchResults(e.target.value).then(data => {
-							setSearchResults(data);
-						});
+						searchForSymbol(e.target.value);
 					}}
 					ref={inputRef}
 				/>
