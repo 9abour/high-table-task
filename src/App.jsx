@@ -108,7 +108,7 @@ function App() {
 		}
 	};
 
-	// Update the charts and stack info when the symbol changes
+	// Update the charts & stack info when the symbol changes
 	useEffect(() => {
 		fetchStock();
 		getGlobalQuoteInfo(currentSymbol).then(data => setGlobalQuote(data));
