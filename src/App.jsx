@@ -142,7 +142,6 @@ function App() {
 		}
 	};
 
-	// Update the charts & stack info when the symbol changes
 	useEffect(() => {
 		fetchStock();
 		fetchGlobalQuote();
